@@ -1,0 +1,136 @@
+---
+openapi: 3.0.0
+info:
+  title: Step 2 | API design
+  description: An api to set and read the forecast for a specific city
+  contact:
+    email: akourmatzo@gmail.com
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.0.0
+servers:
+- url: https://virtserver.swaggerhub.com/ApostolosK/CityForecast/1.0.0
+  description: SwaggerHub API Auto Mocking
+tags:
+- name: Apostolos Kourmatzoglou
+  description: Api creator
+paths:
+  /cities/set-forecast:
+    post:
+      summary: set forecast in a specific city for a specific date
+      description: Sets forecast for a city
+      operationId: setForecast
+      parameters:
+      - name: Application Key
+        in: header
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          format: uuid
+          example: d290f1ee-6c54-4b01-90e6-d701748f0851
+      - name: Accept-Language
+        in: header
+        required: false
+        style: simple
+        explode: false
+        schema:
+          type: string
+          example: en-US
+          default: en-US
+      requestBody:
+        description: forecast of specific date in a specific city add
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SetForecast'
+      responses:
+        "201":
+          description: Returned when successfull seting of a forecast
+        "400":
+          description: Returned when invalid or missing input, object invalid
+        "500":
+          description: Returned when service is unvailable / unreachable
+  /cities/get-forecast/{cityId}&{returnDate}:
+    get:
+      summary: get forecast of specific city in a specific date
+      description: Get forecast for a city
+      operationId: getForecast
+      parameters:
+      - name: Application Key
+        in: header
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          format: uuid
+          example: d290f1ee-6c54-4b01-90e6-d701748f0851
+      - name: Accept-Language
+        in: header
+        required: false
+        style: simple
+        explode: false
+        schema:
+          type: string
+          example: en-US
+          default: en-US
+      - name: cityId
+        in: path
+        description: The unique id of a city
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+      - name: returnDate
+        in: path
+        description: The date of the forecast
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        "201":
+          description: Returned when successfull getting of a forecast
+        "400":
+          description: Returned when invalid or missing input, object invalid
+        "500":
+          description: Returned when service is unvailable / unreachable
+components:
+  schemas:
+    SetForecast:
+      properties:
+        cityId:
+          type: integer
+        forecast:
+          type: string
+          example: Raining date 10 degrees
+        date:
+          type: string
+          format: date-time
+          example: 2022-03-07T09:12:33.001Z
+  parameters:
+    ApiKey:
+      name: Application Key
+      in: header
+      required: true
+      style: simple
+      explode: false
+      schema:
+        type: string
+        format: uuid
+        example: d290f1ee-6c54-4b01-90e6-d701748f0851
+    Accept-Language:
+      name: Accept-Language
+      in: header
+      required: false
+      style: simple
+      explode: false
+      schema:
+        type: string
+        example: en-US
+        default: en-US

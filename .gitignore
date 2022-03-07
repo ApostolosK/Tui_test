@@ -1,0 +1,9 @@
+phpcbf.phar
+phpcs.phar
+.env
+composer.lock
+.idea
+*.swp
+.cache
+*.log
+vendor
