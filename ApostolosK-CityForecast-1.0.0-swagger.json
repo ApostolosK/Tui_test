@@ -1,0 +1,140 @@
+{
+  "openapi" : "3.0.0",
+  "servers" : [ {
+    "description" : "SwaggerHub API Auto Mocking",
+    "url" : "https://virtserver.swaggerhub.com/ApostolosK/CityForecast/1.0.0"
+  } ],
+  "info" : {
+    "description" : "An api to set and read the forecast for a specific city",
+    "version" : "1.0.0",
+    "title" : "Step 2 | API design",
+    "contact" : {
+      "email" : "akourmatzo@gmail.com"
+    },
+    "license" : {
+      "name" : "Apache 2.0",
+      "url" : "http://www.apache.org/licenses/LICENSE-2.0.html"
+    }
+  },
+  "tags" : [ {
+    "name" : "Apostolos Kourmatzoglou",
+    "description" : "Api creator"
+  } ],
+  "paths" : {
+    "/cities/set-forecast" : {
+      "post" : {
+        "summary" : "set forecast in a specific city for a specific date",
+        "operationId" : "setForecast",
+        "description" : "Sets forecast for a city",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/ApiKey"
+        }, {
+          "$ref" : "#/components/parameters/Accept-Language"
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/SetForecast"
+              }
+            }
+          },
+          "description" : "forecast of specific date in a specific city add"
+        },
+        "responses" : {
+          "201" : {
+            "description" : "Returned when successfull seting of a forecast"
+          },
+          "400" : {
+            "description" : "Returned when invalid or missing input, object invalid"
+          },
+          "500" : {
+            "description" : "Returned when service is unvailable / unreachable"
+          }
+        }
+      }
+    },
+    "/cities/get-forecast/{cityId}&{returnDate}" : {
+      "get" : {
+        "summary" : "get forecast of specific city in a specific date",
+        "operationId" : "getForecast",
+        "description" : "Get forecast for a city",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/ApiKey"
+        }, {
+          "$ref" : "#/components/parameters/Accept-Language"
+        }, {
+          "in" : "path",
+          "name" : "cityId",
+          "schema" : {
+            "type" : "integer"
+          },
+          "description" : "The unique id of a city",
+          "required" : true
+        }, {
+          "in" : "path",
+          "name" : "returnDate",
+          "schema" : {
+            "type" : "string"
+          },
+          "description" : "The date of the forecast",
+          "required" : true
+        } ],
+        "responses" : {
+          "201" : {
+            "description" : "Returned when successfull getting of a forecast"
+          },
+          "400" : {
+            "description" : "Returned when invalid or missing input, object invalid"
+          },
+          "500" : {
+            "description" : "Returned when service is unvailable / unreachable"
+          }
+        }
+      }
+    }
+  },
+  "components" : {
+    "schemas" : {
+      "SetForecast" : {
+        "properties" : {
+          "cityId" : {
+            "type" : "integer",
+            "example" : "203 - CityId for London"
+          },
+          "forecast" : {
+            "type" : "string",
+            "example" : "Raining date 10 degrees"
+          },
+          "date" : {
+            "type" : "string",
+            "format" : "date-time",
+            "example" : "2022-03-07T09:12:33.001Z"
+          }
+        }
+      }
+    },
+    "parameters" : {
+      "ApiKey" : {
+        "name" : "Application Key",
+        "required" : true,
+        "in" : "header",
+        "schema" : {
+          "type" : "string",
+          "format" : "uuid",
+          "example" : "d290f1ee-6c54-4b01-90e6-d701748f0851"
+        }
+      },
+      "Accept-Language" : {
+        "name" : "Accept-Language",
+        "required" : false,
+        "in" : "header",
+        "schema" : {
+          "type" : "string",
+          "example" : "en-US",
+          "default" : "en-US"
+        }
+      }
+    }
+  }
+}
